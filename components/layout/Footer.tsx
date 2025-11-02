@@ -31,14 +31,14 @@ export default function Footer() {
             Earphones
           </Link>
         </nav>
-        <p className="max-w-md text-gray">
+        <p className="max-w-md text-white/50!">
           Audiophile is an all in one stop to fulfill your audio needs. We're a
           small team of music lovers and sound specialists who are devoted to
           helping you get the most out of personal audio. Come and visit our
           demo facility - we’re open 7 days a week.
         </p>
         <div className="w-full flex flex-col gap-12">
-          <p className="text-gray">Copyright 2021. All Rights Reserved</p>
+          <p className="text-white/50!">Copyright 2021. All Rights Reserved</p>
           <div className="flex gap-4 items-center justify-center text-2xl">
             <FaFacebookSquare />
             <FaTwitter />

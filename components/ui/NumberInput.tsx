@@ -23,18 +23,18 @@ const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, min = 1, max
       <button
         onClick={handleDecrease}
         className={clsx(
-          "text-[#979797] text-lg font-bold transition-all duration-300 hover:text-primary cursor-pointer"
+          "text-gray text-lg font-bold transition-all duration-300 hover:text-primary cursor-pointer"
         )}
       >
         -
       </button>
-      <span className="text-[13px] font-bold tracking-[0.063rem] text-[#101010]">
+      <span className="text-[13px] font-bold tracking-[0.063rem] text-black">
         {value}
       </span>
       <button
         onClick={handleIncrease}
         className={clsx(
-          "text-[#979797] text-lg font-bold transition-all duration-300 hover:text-primary cursor-pointer"
+          "text-gray text-lg font-bold transition-all duration-300 hover:text-primary cursor-pointer"
         )}
       >
         +
