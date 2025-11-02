@@ -107,6 +107,10 @@ h5 {
 h6 {
   @apply text-h6;
 }
+
+p {
+  @apply text-true-black/50 bg-transparent;
+}
 .overline {
   @apply text-overline;
 }

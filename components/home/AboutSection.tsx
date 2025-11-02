@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function AboutSection() {
   return (
-    <section className="container px-6 py-12 grid lg:grid-cols-2 gap-8 items-center text-center">
+    <section className="container px-6 py-12 pb-24 grid lg:grid-cols-2 gap-8 items-center text-center">
       <Image
         src="/images/man-with-headphones.png"
         alt="ZX9 Speaker"
