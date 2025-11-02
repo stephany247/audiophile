@@ -1,6 +1,14 @@
+"use client";
+import Button from "@/components/ui/Button";
+import NumberInput from "@/components/ui/NumberInput";
+import RadioSelect from "@/components/ui/RadioSelect";
+import TextField from "@/components/ui/TextField";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Home() {
+  const [method, setMethod] = useState("e-Money");
+  const [quantity, setQuantity] = useState(1);
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
@@ -58,6 +66,41 @@ export default function Home() {
           >
             Documentation
           </a>
+        </div>
+        <div className="flex gap-4 bg-[#FAFAFA] p-8">
+          <Button variant="primary">See Product</Button>
+          <Button variant="secondary">See Product</Button>
+          <Button variant="ghost">Shop</Button>
+          <TextField label="name" error="true" />
+        </div>
+
+        <div className="flex flex-col gap-4 bg-[#FAFAFA] p-8">
+          {/* Default */}
+          <RadioSelect
+            label="e-Money"
+            name="payment"
+            value="e-Money"
+            checked={method === ""}
+            onChange={setMethod}
+          />
+
+          {/* Hover (visual state shows when hovered) */}
+          <RadioSelect
+            label="e-Money"
+            name="payment"
+            value="e-Money"
+            onChange={setMethod}
+          />
+
+          {/* Active */}
+          <RadioSelect
+            label="e-Money"
+            name="payment"
+            value="e-Money"
+            checked={method === "e-Money"}
+            onChange={setMethod}
+          />
+          <NumberInput value={quantity} onChange={setQuantity} />
         </div>
       </main>
     </div>

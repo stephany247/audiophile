@@ -1,0 +1,46 @@
+"use client";
+import React from "react";
+import clsx from "clsx";
+
+interface NumberInputProps {
+  value: number;
+  onChange: (value: number) => void;
+  min?: number;
+  max?: number;
+}
+
+const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, min = 1, max = 99 }) => {
+  const handleDecrease = () => {
+    if (value > min) onChange(value - 1);
+  };
+
+  const handleIncrease = () => {
+    if (value < max) onChange(value + 1);
+  };
+
+  return (
+    <div className="flex items-center justify-between w-30 bg-surface px-3 py-2">
+      <button
+        onClick={handleDecrease}
+        className={clsx(
+          "text-[#979797] text-lg font-bold transition-all duration-300 hover:text-primary cursor-pointer"
+        )}
+      >
+        -
+      </button>
+      <span className="text-[13px] font-bold tracking-[0.063rem] text-[#101010]">
+        {value}
+      </span>
+      <button
+        onClick={handleIncrease}
+        className={clsx(
+          "text-[#979797] text-lg font-bold transition-all duration-300 hover:text-primary cursor-pointer"
+        )}
+      >
+        +
+      </button>
+    </div>
+  );
+};
+
+export default NumberInput;
