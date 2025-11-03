@@ -2,16 +2,16 @@ import Image from "next/image";
 
 export default function AboutSection() {
   return (
-    <section className="container px-6 py-12 pb-24 grid lg:grid-cols-2 gap-8 items-center text-center">
+    <section className="container px-6 py-12 pb-24 flex flex-col lg:flex-row-reverse gap-8 md:gap-12 lg:gap-16 items-center text-center lg:text-left">
       <Image
-        src="/images/man-with-headphones.png"
+        src="/images/image-best-gear.jpg"
         alt="ZX9 Speaker"
         width={640}
         height={420}
-        className="relative z-10 w-full h-75 rounded object-cover object-center"
+        className="relative z-10 w-full h-75 md:h-auto lg:max-h-120 aspect-square md:aspect-video lg:aspect-square rounded object-cover object-center md:object-[100%_60%]"
       />
-      <div className="space-y-4">
-        <h3 className="text-h3 font-bold uppercase">
+      <div className="space-y-4 lg:space-y-8 md:w-8/10 lg:w-full mx-auto">
+        <h3 className="text-h3! md:text-h1! font-bold uppercase">
           Bringing you the{" "}
           <mark className="bg-transparent text-primary">best</mark> audio gear
         </h3>

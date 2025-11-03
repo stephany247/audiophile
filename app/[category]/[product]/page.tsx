@@ -32,7 +32,7 @@ export default async function ProductPage({ params }: Props) {
     <div className="space-y-16 p-6">
       <section className="space-y-6">
         <Link
-          href={`/categories/${category}`}
+          href={`/${category}`}
           className="text-gray font-medium inline-block"
         >
           Go back

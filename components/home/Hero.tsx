@@ -16,7 +16,7 @@ export default function Hero({
 }: HeroProps) {
   return (
     <section className="relative bg-black text-white">
-      <div className="absolute inset-0 md:relative md:inset-auto md:hidden">
+      <div className="absolute inset-0 lg:relative lg:inset-auto lg:hidden">
         <Image
           src={imgSrc}
           alt={title}
@@ -26,39 +26,39 @@ export default function Hero({
           sizes="(max-width: 767px) 100vw, 50vw"
         />
         {/* subtle dark overlay so text is readable */}
-        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-true-black/60" />
       </div>
 
-      <section className="container grid lg:grid-cols-2 gap-10 items-center px-6 py-32">
+      <section className="container grid lg:grid-cols-2 gap-10 md:gap-0 items-center px-6 py-32 md:py-0">
         {/* Text column — centered on mobile, left-aligned from md up */}
-        <div className="relative z-10 space-y-6 text-center md:text-left">
-          <p className="text-sm tracking-[0.063rem] uppercase text-accent">
+        <div className="relative z-10 space-y-6 md:space-y-10 text-center lg:text-left">
+          <p className="tracking-[0.63rem] uppercase text-accent!">
             New Product
           </p>
 
-          <h2 className="uppercase font-manrope font-bold text-h1 leading-10 tracking-wider">
+          <h2 className="uppercase font-manrope font-bold text-h1! tracking-wider">
             {title}
             <span className="block">{subtitle}</span>
           </h2>
 
-          <p className="max-w-xl mx-auto md:mx-0 text-[15px] font-medium leading-6">
+          <p className="max-w-sm mx-auto lg:mx-0 text-[15px] font-medium leading-6 text-white/75!">
             {description}
           </p>
 
-          <div className="flex justify-center md:justify-start">
+          <div className="flex justify-center lg:justify-start">
             <Button variant="primary">See Product</Button>
           </div>
         </div>
 
         {/* Desktop image column — hidden on mobile, visible md+ */}
-        <div className="hidden md:flex relative w-full h-96 items-center justify-center">
+        <div className="hidden lg:flex relative w-full h-full items-center justify-center">
           <div className="w-full max-w-140">
             <Image
               src={imgSrc}
               alt={`${title} hero`}
               width={720}
               height={720}
-              className="object-contain"
+              className="object-contain md:object-cover"
               priority
             />
           </div>
