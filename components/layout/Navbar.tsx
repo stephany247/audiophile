@@ -5,9 +5,11 @@ import { useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import { MdMenu } from "react-icons/md";
 import MobileMenu from "./MobileMenu";
+import CartModal from "../cartModal/CartModal";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
 
   return (
     <header className="w-full bg-true-black text-white">
@@ -15,7 +17,11 @@ export default function Navbar() {
         {/* MOBILE + TABLET LEFT SECTION */}
         <div className="flex items-center gap-4 lg:gap-8">
           {/* Menu icon (hidden on desktop) */}
-          <button className="lg:hidden" onClick={() => setOpen(!open)} aria-label="Open menu">
+          <button
+            className="lg:hidden"
+            onClick={() => setOpen(!open)}
+            aria-label="Open menu"
+          >
             <MdMenu size={28} />
           </button>
 
@@ -56,8 +62,12 @@ export default function Navbar() {
           </Link>
         </nav>
 
-        {/* CART ICON (always visible, right side) */}
-        <button className="text-white" aria-label="Open cart">
+        {/* CART ICON */}
+        <button
+          className="text-white"
+          onClick={() => setCartOpen(true)} //opens cart modal
+          aria-label="Open cart"
+        >
           <IoCartOutline size={26} />
         </button>
       </div>
@@ -65,6 +75,9 @@ export default function Navbar() {
       {/* divider line */}
       <div className="h-px bg-[#2C2C2C] mx-6"></div>
       <MobileMenu open={open} onClose={() => setOpen(false)} />
+
+      {/* cart modal */}
+      {cartOpen && <CartModal open={cartOpen} onClose={() => setCartOpen(false)} />}
     </header>
   );
 }

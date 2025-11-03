@@ -9,7 +9,12 @@ interface NumberInputProps {
   max?: number;
 }
 
-const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, min = 1, max = 99 }) => {
+const NumberInput: React.FC<NumberInputProps> = ({
+  value,
+  onChange,
+  min = 1,
+  max = 99,
+}) => {
   const handleDecrease = () => {
     if (value > min) onChange(value - 1);
   };
@@ -19,8 +24,9 @@ const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, min = 1, max
   };
 
   return (
-    <div className="flex items-center justify-between w-30 bg-surface px-3 py-2">
+    <div className="flex items-center justify-between w-30 bg-surface p-2 md:px-3 md:py-3">
       <button
+        type="button"
         onClick={handleDecrease}
         className={clsx(
           "text-gray text-lg font-bold transition-all duration-300 hover:text-primary cursor-pointer"
@@ -32,6 +38,7 @@ const NumberInput: React.FC<NumberInputProps> = ({ value, onChange, min = 1, max
         {value}
       </span>
       <button
+        type="button"
         onClick={handleIncrease}
         className={clsx(
           "text-gray text-lg font-bold transition-all duration-300 hover:text-primary cursor-pointer"

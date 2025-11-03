@@ -63,7 +63,7 @@ export default async function ProductPage({ params }: Props) {
             <div className="mt-6">
               <div>
                 <p className="mb-4 font-medium">{item.description}</p>
-                <h6 className="mb-6">{formatCurrency(item.price)} </h6>
+                <h6 className="mb-6">{formatCurrency(item.price)}</h6>
 
                 {/* Add actions */}
                 {/* Client-only interactive part */}

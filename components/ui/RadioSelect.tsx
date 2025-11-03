@@ -29,8 +29,8 @@ const RadioSelect: React.FC<RadioSelectProps> = ({
         name={name}
         value={value}
         checked={checked}
-        onChange={() => onChange?.(value)}
-        className="w-4 h-4 border border-accent checked:accent-primary rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 indeterminate:bg-primary"
+        onChange={(e) => onChange?.(e.target.value)}
+        className="w-4 h-4 border border-accent checked:accent-primary rounded-full cursor-pointer transition-all duration-300"
       />
       <span className="text-[14px] font-bold tracking-[-0.21px] text-true-black">
         {label}

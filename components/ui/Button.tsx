@@ -4,12 +4,14 @@ import Link from "next/link";
 import clsx from "clsx";
 
 type ButtonVariant = "primary" | "secondary" | "ghost";
+type ButtonType = "button" | "submit" | "reset";
 
 interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   children: React.ReactNode;
   href?: string; // optional for links
+  btnType?: ButtonType; // optional to switch btn type
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -17,6 +19,7 @@ const Button: React.FC<ButtonProps> = ({
   children,
   className,
   href,
+  btnType = "button",
   ...props
 }) => {
   const baseStyles =
@@ -41,7 +44,7 @@ const Button: React.FC<ButtonProps> = ({
   }
 
   return (
-    <button type="button" className={styles} {...props}>
+    <button type={btnType} className={styles} {...props}>
       {children}
     </button>
   );
