@@ -12,14 +12,14 @@ export default function ProductCard({ product }: Props) {
   const href = `/${product.category}/${product.id}`;
 
   return (
-    <article className="text-center space-y-6">
-      <div className="relative w-full aspect-5/3 rounded overflow-hidden bg-surface">
+    <article className="text-center space-y-6 md:space-y-10">
+      <div className="relative w-full aspect-5/3 md:aspect-2/3 lg:aspect-square rounded overflow-hidden bg-surface">
         <Image
           src={product.images?.[1] ?? "/images/headphone.png"}
           alt={product.name}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-contain w-20 h-auto"
+          className="object-contain md:object-cover w-20 h-auto"
         />
       </div>
 

@@ -29,7 +29,7 @@ export default function Hero({
         <div className="absolute inset-0 bg-true-black/60" />
       </div>
 
-      <section className="container grid lg:grid-cols-2 gap-10 md:gap-0 items-center px-6 py-32 md:py-0">
+      <section className="page-container grid lg:grid-cols-2 gap-10 md:gap-0 items-center px-6 py-32 md:py-0">
         {/* Text column — centered on mobile, left-aligned from md up */}
         <div className="relative z-10 space-y-6 md:space-y-10 text-center lg:text-left">
           <p className="tracking-[0.63rem] uppercase text-accent!">

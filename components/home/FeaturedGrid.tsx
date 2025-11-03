@@ -3,7 +3,7 @@ import Button from "@/components/ui/Button";
 
 export default function FeaturedGrid() {
   return (
-    <section className="container px-6 py-12 grid grid-cols-1 items-stretch text-center gap-8 h-full">
+    <section className="page-container px-6 py-12 grid grid-cols-1 items-stretch text-center gap-8 h-full">
       <article className="col-span-1 bg-primary text-white rounded p-8 py-16 lg:py-0 h-150 lg:h-110 w-full flex flex-col lg:flex-row justify-between lg:justify-center items-center gap-6 lg:gap-20 bg-[url(/images/circle-illustration.png)] bg-contain bg-top md:bg-position-[center_bottom_3.8rem] lg:bg-position-[left_6rem_top_9rem] bg-no-repeat">
         {/* brown speaker */}
         <Image

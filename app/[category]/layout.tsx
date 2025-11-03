@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 import Categories from "@/components/home/Categories";
 import AboutSection from "@/components/home/AboutSection";
 
@@ -11,7 +9,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Audiophile E-Commerce App",
+  title: "Audiophile E-Commerce App | Category",
   description:
     "Experience high-end audio gear. Shop headphones, speakers, and earphones designed for real sound lovers.",
   keywords: [

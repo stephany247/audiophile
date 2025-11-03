@@ -20,7 +20,7 @@ const categories = [
 
 export default function Categories() {
   return (
-    <section className="container px-6 py-12 grid sm:grid-cols-3 gap-12 md:gap-4 pb-8 pt-24 sm:pb-16">
+    <section className="page-container py-12 grid sm:grid-cols-3 gap-12 md:gap-4 pb-8 pt-24 sm:pb-16">
       {categories.map((cat) => (
         <CategoryCard
           key={cat.title}

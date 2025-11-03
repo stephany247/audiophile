@@ -49,7 +49,7 @@ export default function MobileMenu({ open, onClose }: MobileMenuProps) {
       {/* Drawer */}
       <div className="relative z-10 w-full h-fit bg-white overflow-auto pb-8 pt-24 sm:pb-16 rounded-b-2xl">
         {/* Drawer */}
-        <section className="container grid sm:grid-cols-3 gap-y-16 gap-x-4 bg-white">
+        <section className="page-container grid sm:grid-cols-3 gap-y-16 gap-x-4 bg-white">
           <CategoryCard
             title="Headphones"
             href="/headphones"

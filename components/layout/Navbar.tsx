@@ -11,7 +11,7 @@ export default function Navbar() {
 
   return (
     <header className="w-full bg-true-black text-white">
-      <div className="container flex items-center justify-between px-6 py-6 relative">
+      <div className="page-container flex items-center justify-between px-6 py-6 relative">
         {/* MOBILE + TABLET LEFT SECTION */}
         <div className="flex items-center gap-4 lg:gap-8">
           {/* Menu icon (hidden on desktop) */}
