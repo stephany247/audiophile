@@ -47,16 +47,18 @@ export default function CheckoutForm() {
     eMoneyPin: "",
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>(
-    {}
-  );
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof FormState, string>>
+  >({});
   const [submitting, setSubmitting] = useState(false);
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const hiddenSubmitRef = useRef<HTMLButtonElement | null>(null);
 
-  const handleChange = <K extends keyof FormState>(key: K, value: FormState[K]) =>
-    setForm((f) => ({ ...f, [key]: value }));
+  const handleChange = <K extends keyof FormState>(
+    key: K,
+    value: FormState[K]
+  ) => setForm((f) => ({ ...f, [key]: value }));
 
   function validate(): boolean {
     const e: Partial<Record<keyof FormState, string>> = {};
@@ -145,12 +147,10 @@ export default function CheckoutForm() {
   function triggerSubmitFromSummary() {
     if (submitting || items.length === 0) return;
     const formEl = formRef.current;
-    // prefer requestSubmit if available (triggers onSubmit + validation)
     if (formEl && "requestSubmit" in formEl) {
       (formEl as HTMLFormElement).requestSubmit();
       return;
     }
-    // fallback: click hidden submit button which will trigger onSubmit
     hiddenSubmitRef.current?.click();
   }
 
@@ -284,7 +284,7 @@ export default function CheckoutForm() {
               ref={hiddenSubmitRef}
               className="hidden"
               aria-hidden
-            />
+            >Continue & Pay</button>
           </form>
         </div>
 
@@ -304,7 +304,11 @@ export default function CheckoutForm() {
               { label: "TOTAL", value: totals.subtotal },
               { label: "SHIPPING", value: totals.shipping },
               { label: "VAT (INCLUDED)", value: totals.taxes },
-              { label: "GRAND TOTAL", value: totals.grandTotal, highlight: true },
+              {
+                label: "GRAND TOTAL",
+                value: totals.grandTotal,
+                highlight: true,
+              },
             ].map(({ label, value, highlight }) => (
               <div
                 key={label}
@@ -318,7 +322,6 @@ export default function CheckoutForm() {
             ))}
           </div>
 
-          {/* Submit button placed at base of summary card */}
           <div>
             <Button
               variant="primary"

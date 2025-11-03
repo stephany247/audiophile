@@ -1,5 +1,6 @@
 import { mutation } from "./_generated/server";
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
 
 export const createOrder = mutation({
   args: {
@@ -49,6 +50,14 @@ export const createOrder = mutation({
     const orderId = await ctx.db.insert("orders", {
       ...args,
       status: "pending",
+    });
+
+    await ctx.scheduler.runAfter(0, internal.sendOrderEmail.sendOrderConfirmation, {
+      orderId: String(orderId),
+      customer: args.customer,
+      items: args.items,
+      shipping: args.shipping,
+      totals: args.totals,
     });
 
     return { _id: orderId };
