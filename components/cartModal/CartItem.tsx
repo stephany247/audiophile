@@ -13,7 +13,19 @@ type CartItemType = {
   qty: number;
 };
 
-export default function CartItem({ item }: { item: CartItemType }) {
+interface CartItemProps {
+  item: CartItemType;
+  editable?: boolean; // show NumberInput when true (default)
+  compact?: boolean; // tighter spacing for summary cards
+  onQtyChange?: (id: string, qty: number) => void; // override internal update
+}
+
+export default function CartItem({
+  item,
+  editable = true,
+  compact = false,
+  onQtyChange,
+}: CartItemProps) {
   const { updateQty } = useCart();
 
   const product = products.find((p) => p.id === item.id);
@@ -23,8 +35,7 @@ export default function CartItem({ item }: { item: CartItemType }) {
     "/images/placeholder.png";
 
   return (
-    <div className="flex items-center gap-4">
-      {/* Thumbnail */}
+    <div className={`flex items-center gap-4 ${compact ? "py-2" : "py-4"}`}>
       <div className="w-14 h-14 rounded overflow-hidden bg-gray-100 flex items-center justify-center">
         <Image
           src={productImage}
@@ -35,23 +46,25 @@ export default function CartItem({ item }: { item: CartItemType }) {
         />
       </div>
 
-
       <div className="flex-1">
         <div className="flex items-center justify-between gap-3">
           <div className="flex flex-col justify-center">
             {/* <div className="text-sm font-semibold">{item.name}</div> */}
             <h6 className="text-true-black">{item.name}</h6>
-            <div className="text-xs text-true-black/50! font-medium">
+            <p className="text-sm font-medium">
               {formatCurrency(item.price)}
-            </div>
+            </p>
           </div>
-
-          <NumberInput
-            value={item.qty}
-            onChange={(v) => updateQty(item.id, v)}
-            min={1}
-            max={99}
-          />
+          {editable ? (
+            <NumberInput
+              value={item.qty}
+              onChange={(v) => updateQty(item.id, v)}
+              min={1}
+              max={99}
+            />
+          ) : (
+            <p className="font-bold self-start">x{item.qty}</p>
+          )}
         </div>
       </div>
     </div>

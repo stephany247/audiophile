@@ -23,7 +23,7 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    "inline-flex items-center justify-center uppercase font-manrope text-subtitle px-6 py-3 rounded-none transition-all duration-300";
+    "inline-flex items-center justify-center uppercase font-manrope text-subtitle px-6 py-3 rounded-none transition-all duration-300 disabled:bg-gray";
 
   const variants: Record<ButtonVariant, string> = {
     primary: "bg-[var(--color-primary)] text-white hover:bg-[var(--color-secondary)]",

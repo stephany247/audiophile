@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useCart } from "@/stores/cart";
@@ -8,6 +8,8 @@ import Link from "next/link";
 import TextField from "@/components/ui/TextField";
 import RadioSelect from "@/components/ui/RadioSelect";
 import Button from "@/components/ui/Button";
+import { formatCurrency } from "@/utils/formatCurrency";
+import CartItem from "../cartModal/CartItem";
 
 type FormState = {
   name: string;
@@ -18,15 +20,19 @@ type FormState = {
   postalCode: string;
   country: string;
   paymentMethod: "EMONEY" | "CASH_ON_DELIVERY";
-  // keep e-money inputs in UI only (not sent to server)
   eMoneyNumber?: string;
   eMoneyPin?: string;
 };
 
 export default function CheckoutForm() {
-  // adjust to match your generated API namespace if different:
   const createOrder = useMutation(api.orders.createOrder);
   const { items, clear } = useCart();
+
+  const subtotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+  const shipping = 50;
+  const taxes = 100;
+  const grandTotal = subtotal + shipping + taxes;
+  const totals = { subtotal, shipping, taxes, grandTotal };
 
   const [form, setForm] = useState<FormState>({
     name: "",
@@ -41,15 +47,16 @@ export default function CheckoutForm() {
     eMoneyPin: "",
   });
 
-  const [errors, setErrors] = useState<
-    Partial<Record<keyof FormState, string>>
-  >({});
+  const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>(
+    {}
+  );
   const [submitting, setSubmitting] = useState(false);
 
-  const handleChange = <K extends keyof FormState>(
-    key: K,
-    value: FormState[K]
-  ) => setForm((f) => ({ ...f, [key]: value }));
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const hiddenSubmitRef = useRef<HTMLButtonElement | null>(null);
+
+  const handleChange = <K extends keyof FormState>(key: K, value: FormState[K]) =>
+    setForm((f) => ({ ...f, [key]: value }));
 
   function validate(): boolean {
     const e: Partial<Record<keyof FormState, string>> = {};
@@ -62,7 +69,6 @@ export default function CheckoutForm() {
     if (!form.postalCode.trim()) e.postalCode = "Required";
     if (!form.country.trim()) e.country = "Required";
 
-    // e-money inputs are optional for the server; only validate if you want them required in UI
     if (form.paymentMethod === "EMONEY") {
       if (!form.eMoneyNumber?.trim()) e.eMoneyNumber = "Required";
       if (!form.eMoneyPin?.trim()) e.eMoneyPin = "Required";
@@ -74,27 +80,17 @@ export default function CheckoutForm() {
 
   function makeIdempotencyKey() {
     if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
-      // browser or Node 19+
-      // @ts-ignore - randomUUID exists on modern runtimes
+      // @ts-ignore
       return (crypto as any).randomUUID();
     }
-    // fallback
     return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log("handleSubmit fired", { form, items });
     if (!validate()) return;
 
     setSubmitting(true);
-
-    // compute totals clearly (typed variables avoid TS index errors)
-    const subtotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
-    const shipping = 50;
-    const taxes = 100;
-    const grandTotal = subtotal + shipping + taxes;
-    const totals = { subtotal, shipping, taxes, grandTotal };
 
     const order = {
       idempotencyKey: makeIdempotencyKey(),
@@ -116,7 +112,6 @@ export default function CheckoutForm() {
         qty: i.qty,
       })),
       totals,
-      // Only send payment.method — no PINs, provider refs, or status.
       payment: {
         method: form.paymentMethod,
       },
@@ -126,7 +121,6 @@ export default function CheckoutForm() {
       await createOrder(order);
       alert("Order created successfully!");
       clear();
-      // reset form (preserve choice if you want)
       setForm({
         name: "",
         email: "",
@@ -147,124 +141,196 @@ export default function CheckoutForm() {
     }
   }
 
+  // Programmatically trigger form submit from the summary button
+  function triggerSubmitFromSummary() {
+    if (submitting || items.length === 0) return;
+    const formEl = formRef.current;
+    // prefer requestSubmit if available (triggers onSubmit + validation)
+    if (formEl && "requestSubmit" in formEl) {
+      (formEl as HTMLFormElement).requestSubmit();
+      return;
+    }
+    // fallback: click hidden submit button which will trigger onSubmit
+    hiddenSubmitRef.current?.click();
+  }
+
   return (
     <section className="bg-bg p-6 pb-16">
       <Link href="/" className="text-gray font-medium inline-block pb-6">
         Go back
       </Link>
-      <div className="p-4 bg-white rounded-lg">
-        <h4 className="uppercase">Checkout</h4>
-        <p className="uppercase text-primary! font-bold my-6">Billing details</p>
-        <form onSubmit={handleSubmit} className="space-y-4 flex flex-col">
-          <TextField
-            label="Name"
-            id="name"
-            value={form.name}
-            onChange={(e) => handleChange("name", e.target.value)}
-            error={errors.name}
-            placeholder="Alexei Ward"
-          />
-          <TextField
-            label="Email Address"
-            id="email"
-            value={form.email}
-            onChange={(e) => handleChange("email", e.target.value)}
-            error={errors.email}
-            placeholder="alexei@mail.com"
-            type="email"
-          />
-          <TextField
-            label="Phone number"
-            id="phone"
-            value={form.phone}
-            onChange={(e) => handleChange("phone", e.target.value)}
-            error={errors.phone}
-            placeholder="+1 202-555-0136"
-            type="tel"
-          />
 
-          <p className="uppercase text-primary! font-bold my-6">Shipping</p>
-          <TextField
-            label="Your Address"
-            id="address1"
-            value={form.address1}
-            onChange={(e) => handleChange("address1", e.target.value)}
-            error={errors.address1}
-            placeholder="1137 Williams Avenue"
-          />
-          <div className="flex gap-4">
-            <TextField
-              label="ZIP Code"
-              id="postalCode"
-              value={form.postalCode}
-              onChange={(e) => handleChange("postalCode", e.target.value)}
-              error={errors.postalCode}
-              placeholder="10001"
-            />
-            <TextField
-              label="City"
-              id="city"
-              value={form.city}
-              onChange={(e) => handleChange("city", e.target.value)}
-              error={errors.city}
-              placeholder="New York"
-            />
-          </div>
-          <TextField
-            label="Country"
-            id="country"
-            value={form.country}
-            onChange={(e) => handleChange("country", e.target.value)}
-            error={errors.country}
-            placeholder="United States"
-          />
-
-          <p className="uppercase text-primary! text-sm font-bold my-6">
-            Payment Method
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="p-6 bg-white rounded-lg">
+          <h4 className="uppercase">Checkout</h4>
+          <p className="uppercase text-primary font-bold my-6">
+            Billing details
           </p>
-          <div className="flex flex-col gap-3">
-            <RadioSelect
-              label="e-Money"
-              name="paymentMethod"
-              value="EMONEY"
-              checked={form.paymentMethod === "EMONEY"}
-              onChange={(v) => handleChange("paymentMethod", v as any)}
+
+          {/* formRef used so we can trigger submit from summary area */}
+          <form
+            ref={formRef}
+            onSubmit={handleSubmit}
+            className="space-y-4 flex flex-col"
+          >
+            <TextField
+              label="Name"
+              id="name"
+              value={form.name}
+              onChange={(e) => handleChange("name", e.target.value)}
+              error={errors.name}
+              placeholder="Alexei Ward"
             />
-            <RadioSelect
-              label="Cash on Delivery"
-              name="paymentMethod"
-              value="CASH_ON_DELIVERY"
-              checked={form.paymentMethod === "CASH_ON_DELIVERY"}
-              onChange={(v) => handleChange("paymentMethod", v as any)}
+            <TextField
+              label="Email Address"
+              id="email"
+              value={form.email}
+              onChange={(e) => handleChange("email", e.target.value)}
+              error={errors.email}
+              placeholder="alexei@mail.com"
+              type="email"
             />
+            <TextField
+              label="Phone number"
+              id="phone"
+              value={form.phone}
+              onChange={(e) => handleChange("phone", e.target.value)}
+              error={errors.phone}
+              placeholder="+1 202-555-0136"
+              type="tel"
+            />
+
+            <p className="uppercase text-primary font-bold my-6">Shipping</p>
+            <TextField
+              label="Your Address"
+              id="address1"
+              value={form.address1}
+              onChange={(e) => handleChange("address1", e.target.value)}
+              error={errors.address1}
+              placeholder="1137 Williams Avenue"
+            />
+            <div className="flex gap-4">
+              <TextField
+                label="ZIP Code"
+                id="postalCode"
+                value={form.postalCode}
+                onChange={(e) => handleChange("postalCode", e.target.value)}
+                error={errors.postalCode}
+                placeholder="10001"
+              />
+              <TextField
+                label="City"
+                id="city"
+                value={form.city}
+                onChange={(e) => handleChange("city", e.target.value)}
+                error={errors.city}
+                placeholder="New York"
+              />
+            </div>
+            <TextField
+              label="Country"
+              id="country"
+              value={form.country}
+              onChange={(e) => handleChange("country", e.target.value)}
+              error={errors.country}
+              placeholder="United States"
+            />
+
+            <p className="uppercase text-primary text-sm font-bold my-6">
+              Payment Method
+            </p>
+            <div className="flex flex-col gap-3">
+              <RadioSelect
+                label="e-Money"
+                name="paymentMethod"
+                value="EMONEY"
+                checked={form.paymentMethod === "EMONEY"}
+                onChange={(v) => handleChange("paymentMethod", v as any)}
+              />
+              <RadioSelect
+                label="Cash on Delivery"
+                name="paymentMethod"
+                value="CASH_ON_DELIVERY"
+                checked={form.paymentMethod === "CASH_ON_DELIVERY"}
+                onChange={(v) => handleChange("paymentMethod", v as any)}
+              />
+            </div>
+
+            {form.paymentMethod === "EMONEY" && (
+              <>
+                <TextField
+                  label="e-Money Number"
+                  id="eMoneyNumber"
+                  value={form.eMoneyNumber}
+                  onChange={(e) => handleChange("eMoneyNumber", e.target.value)}
+                  error={errors.eMoneyNumber}
+                  placeholder="238521993"
+                />
+                <TextField
+                  label="e-Money Pin"
+                  id="eMoneyPin"
+                  value={form.eMoneyPin}
+                  onChange={(e) => handleChange("eMoneyPin", e.target.value)}
+                  error={errors.eMoneyPin}
+                  placeholder="PIN"
+                  type="password"
+                />
+              </>
+            )}
+
+            {/* hidden native submit so external button can trigger it reliably */}
+            <button
+              type="submit"
+              ref={hiddenSubmitRef}
+              className="hidden"
+              aria-hidden
+            />
+          </form>
+        </div>
+
+        {/* ORDER SUMMARY */}
+        <div className="bg-white rounded-lg p-6 mt-0 space-y-6">
+          <h6 className="uppercase mb-4">Summary</h6>
+
+          <div className="space-y-2">
+            {items.map((item) => (
+              <CartItem key={item.id} item={item} editable={false} compact />
+            ))}
           </div>
 
-          {form.paymentMethod === "EMONEY" && (
-            <>
-              <TextField
-                label="e-Money Number"
-                id="eMoneyNumber"
-                value={form.eMoneyNumber}
-                onChange={(e) => handleChange("eMoneyNumber", e.target.value)}
-                error={errors.eMoneyNumber}
-                placeholder="238521993"
-              />
-              <TextField
-                label="e-Money Pin"
-                id="eMoneyPin"
-                value={form.eMoneyPin}
-                onChange={(e) => handleChange("eMoneyPin", e.target.value)}
-                error={errors.eMoneyPin}
-                placeholder="PIN"
-                type="6891"
-              />
-            </>
-          )}
+          {/* Totals Summary (mapped) */}
+          <div className="space-y-4 text-sm font-semibold">
+            {[
+              { label: "TOTAL", value: totals.subtotal },
+              { label: "SHIPPING", value: totals.shipping },
+              { label: "VAT (INCLUDED)", value: totals.taxes },
+              { label: "GRAND TOTAL", value: totals.grandTotal, highlight: true },
+            ].map(({ label, value, highlight }) => (
+              <div
+                key={label}
+                className={`flex justify-between ${
+                  highlight ? "text-primary text-base mt-8" : ""
+                }`}
+              >
+                <p className="text-base">{label}</p>
+                <h6>{formatCurrency(value)}</h6>
+              </div>
+            ))}
+          </div>
 
-          <Button btnType="submit" variant="primary" className="w-full" disabled={submitting}>
-            {submitting ? "Processing…" : "Continue & Pay"}
-          </Button>
-        </form>
+          {/* Submit button placed at base of summary card */}
+          <div>
+            <Button
+              variant="primary"
+              btnType="button"
+              className="w-full"
+              onClick={triggerSubmitFromSummary}
+              disabled={items.length === 0 || submitting}
+            >
+              {submitting ? "Processing…" : "Continue & Pay"}
+            </Button>
+          </div>
+        </div>
       </div>
     </section>
   );

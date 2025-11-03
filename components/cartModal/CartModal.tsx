@@ -1,9 +1,10 @@
 "use client";
 import { useCart } from "@/stores/cart";
 import CartItem from "./CartItem";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import Button from "../ui/Button";
 import { formatCurrency } from "@/utils/formatCurrency";
+import { useRouter } from "next/navigation";
 
 export default function CartModal({
   open,
@@ -13,6 +14,8 @@ export default function CartModal({
   onClose: () => void;
 }) {
   const { items, clear } = useCart();
+  const router = useRouter();
+  const panelRef = useRef<HTMLDivElement | null>(null);
 
   // simple body scroll lock
   useEffect(() => {
@@ -36,14 +39,40 @@ export default function CartModal({
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onKey]);
 
+  // close when clicking outside the modal panel
+  useEffect(() => {
+    if (!open) return;
+
+    function handlePointerDown(e: PointerEvent) {
+      const panel = panelRef.current;
+      if (!panel) return;
+      // if the click is outside the panel, close
+      if (e.target instanceof Node && !panel.contains(e.target)) {
+        onClose();
+      }
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [open, onClose]);
+
   if (!open) return null;
 
-  // sum price * qty (price stored in cents)
+  // subtotal (price assumed to be in same currency units)
   const subtotal = items.reduce((acc, it) => acc + it.price * it.qty, 0);
+
+  const handleCheckout = () => {
+    if (items.length === 0) return; // guard
+    onClose();
+    router.push("/checkout");
+  };
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex justify-center items-start pt-24">
-      <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-md p-6 space-y-6">
+      <div
+        ref={panelRef}
+        className="bg-white rounded-lg shadow-lg w-11/12 max-w-md p-6 space-y-6"
+      >
         <div className="flex justify-between items-center">
           <h2 className="text-h6! uppercase text-true-black">
             Cart ({items.length})
@@ -60,23 +89,24 @@ export default function CartModal({
           {items.length ? (
             items.map((item) => <CartItem key={item.id} item={item} />)
           ) : (
-            <p className="text-sm text-gray-500 text-center">
-              Your cart is empty
-            </p>
+            <p className="text-sm text-gray-500 text-center">Your cart is empty</p>
           )}
         </div>
 
-        {/* Totals */}
-        {/* <div className="mt-6 border-t pt-4"> */}
-          <div className="flex items-center justify-between">
-            <span className="uppercase text-true-black/50">Total</span>
-            <span className="text-lg font-bold text-true-black">
-              {formatCurrency(subtotal)}
-            </span>
-          </div>
-        {/* </div> */}
+        <div className="flex items-center justify-between">
+          <span className="uppercase text-true-black/50">Total</span>
+          <span className="text-lg font-bold text-true-black">
+            {formatCurrency(subtotal)}
+          </span>
+        </div>
 
-        <Button variant="primary" onClick={onClose} className="w-full">
+        <Button
+          variant="primary"
+          btnType="button"
+          onClick={handleCheckout}
+          className="w-full"
+          disabled={items.length === 0}
+        >
           Checkout
         </Button>
       </div>

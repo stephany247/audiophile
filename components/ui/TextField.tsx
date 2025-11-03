@@ -38,10 +38,10 @@ const TextField: React.FC<TextFieldProps> = ({
         value={value}
         placeholder={placeholder}
         className={clsx(
-          "w-full bg-transparent p-4 rounded-lg caret-primary outline-none transition-all duration-300 focus:border-[#D87D4A]",
+          "w-full bg-transparent p-4 rounded-lg caret-primary outline-none transition-all duration-300 focus:border-primary",
           hasError && "border-2 border-red",
           isActive && "border border-primary text-black",
-          !hasError && !isActive && "border border-border",
+          !hasError && !isActive && "border border-accent",
           className
         )}
         {...props}

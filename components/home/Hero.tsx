@@ -36,10 +36,10 @@ export default function Hero({
             New Product
           </p>
 
-          <h2 className="uppercase font-manrope font-bold text-h1! tracking-wider">
+          <h3 className="uppercase font-manrope font-bold md:text-h1! tracking-wider">
             {title}
             <span className="block">{subtitle}</span>
-          </h2>
+          </h3>
 
           <p className="max-w-sm mx-auto lg:mx-0 text-[15px] font-medium leading-6 text-white/75!">
             {description}
