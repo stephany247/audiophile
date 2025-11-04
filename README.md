@@ -56,17 +56,6 @@ Stores the following details:
 
 ---
 
-## ✅ Acceptance Criteria
-
-- Pixel-perfect build matches Figma on all screen sizes
-- End-to-end checkout (Convex + Resend)
-- Complete form validation and error handling
-- Accessible and screen-reader friendly
-- Order confirmation page displays full order summary
-- Clean, modular, and well-documented code
-
----
-
 ## 🛠️ Setup & Installation
 
 ## 🧰 Requirements
@@ -206,6 +195,8 @@ Convex now stores your order data
 Resend sends out order confirmation emails
 
 Both services are connected to your app and ready to go 🚀
+
+---
 
 🧡 Credits
 
