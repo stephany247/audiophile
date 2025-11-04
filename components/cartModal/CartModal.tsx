@@ -79,13 +79,13 @@ export default function CartModal({
           </h2>
           <button
             onClick={clear}
-            className="text-sm text-gray font-medium underline hover:no-underline hover:text-red-500"
+            className="text-sm text-gray font-medium underline hover:no-underline hover:text-primary cursor-pointer"
           >
             Remove all
           </button>
         </div>
 
-        <div className="space-y-4 max-h-80 overflow-y-auto">
+        <div className="space-y-2 max-h-70 overflow-y-auto">
           {items.length ? (
             items.map((item) => <CartItem key={item.id} item={item} />)
           ) : (

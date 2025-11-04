@@ -92,17 +92,17 @@ export default function ConfirmationModal({
         )}
         style={{ willChange: "transform, opacity" }}
       >
-        <div className="space-y-6 md:space-y-8">
-          <div className="flex justify-center">
+        <div className="space-y-6">
+          <div className="">
             <FaCircleCheck className="text-primary w-16 h-16" />
           </div>
 
-          <h5 className="uppercase font-bold mb-2 leading-tight text-center">
+          <h5 className="uppercase font-bold mb-2 leading-tight">
             THANK YOU
             <br />
             FOR YOUR ORDER
           </h5>
-          <p className="text-gray mb-6 text-center">
+          <p className="text-gray mb-6">
             You will receive an email confirmation shortly.
           </p>
 
@@ -110,7 +110,7 @@ export default function ConfirmationModal({
             {/* Card with first item + expand control */}
             <div className="bg-surface rounded-t-lg md:rounded-l-lg md:rounded-r-none p-6 pb-2 md:col-span-3">
               {/* Compact first-item row using CartItem (read-only) */}
-              {first && (
+              {first && !expanded && (
                 <div className="flex items-center justify-between border-b border-gray pb-4">
                   <div className="flex-1">
                     {/* Pass a safe id in case first.id is undefined */}
@@ -130,7 +130,7 @@ export default function ConfirmationModal({
                 </div>
               )}
 
-              {others > 0 && (
+              {others > 0 && !expanded && (
                 <div className="mt-5 flex items-center justify-center">
                   <button
                     type="button"
@@ -147,12 +147,12 @@ export default function ConfirmationModal({
               {/* Expand area: animated height + content */}
               <div
                 className={clsx(
-                  "mt-3 overflow-hidden transition-[max-height] duration-300",
+                  "overflow-y-auto transition-[max-height] duration-300",
                   expanded ? "max-h-80" : "max-h-0"
                 )}
               >
                 {expanded && (
-                  <div className="space-y-3">
+                  <div className="space-y-2 overflow-y-auto">
                     {items.slice(1).map((it, idx) => {
                       const safeItem = {
                         id:
@@ -175,7 +175,9 @@ export default function ConfirmationModal({
               </div>
             </div>
 
-            <div className="flex flex-col justify-center gap-2 p-6 bg-true-black md:col-span-2 rounded-b-l md:rounded-r-lg md:rounded-l-none">
+            <div
+              className={`flex flex-col ${expanded ? "justify-end pb-10" : "justify-center"}  gap-2 p-6 bg-true-black md:col-span-2 rounded-b-l md:rounded-r-lg md:rounded-l-none`}
+            >
               <span className="text-white/50 uppercase text-sm">
                 GRAND TOTAL
               </span>

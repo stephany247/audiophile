@@ -23,8 +23,8 @@ export function buildOrderConfirmationEmail(opts: {
             (it) => `
       <tr>
         <td style="padding:8px 0;border-bottom:1px solid #eee;">
-          <strong style="display:block">Product ${escapeHtml(it.name)}</strong>
-          <small style="color:#666">x${it.qty}</small>
+          <strong style="display:block">${escapeHtml(it.name)}</strong>
+          <small style="color:#666">${it.price} x ${it.qty}</small>
         </td>
         <td style="padding:8px 0;border-bottom:1px solid #eee;text-align:right;">
           ${formatCurrencyHtml(it.price * it.qty)}
