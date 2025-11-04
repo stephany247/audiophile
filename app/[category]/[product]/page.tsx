@@ -67,28 +67,38 @@ export default async function ProductPage({ params }: Props) {
 
                 {/* Add actions */}
                 {/* Client-only interactive part */}
-                <ClientActions productId={String(item.id)} productName={item.name} productPrice={item.price} />
+                <ClientActions
+                  productId={String(item.id)}
+                  productName={item.name}
+                  productPrice={item.price}
+                />
               </div>
             </div>
           </div>
         </div>
       </section>
-      <section className="space-y-2">
-        <h6 className="uppercase text-h5! md:text-h3!">Features</h6>
-        <p>{item.features[0]}</p>
-        <p>{item.features[1]}</p>
-      </section>
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-        <h6 className="uppercase text-h5! md:text-h3!">In the box</h6>
-        <ul className="space-y-3">
-          {item.in_the_box.map((i, idx) => (
-            <li key={idx} className="flex items-center gap-4">
-              <span className="text-primary font-bold">{i.quantity}x</span>
-              <p>{i.item}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+        {/* FEATURES */}
+        <section className="space-y-4 lg:space-y-6">
+          <h6 className="uppercase text-h5! md:text-h3!">Features</h6>
+          <p>{item.features[0]}</p>
+          <p>{item.features[1]}</p>
+        </section>
+
+        {/* IN THE BOX */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 lg:gap-0 w-full">
+          <h6 className="uppercase text-h5! md:text-h3!">In the box</h6>{" "}
+          <ul className="space-y-3">
+            {item.in_the_box.map((i, idx) => (
+              <li key={idx} className="flex items-center gap-4">
+                <span className="text-primary font-bold">{i.quantity}x</span>
+                <p>{i.item}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+
       <section className="grid grid-cols-1 grid-rows-4 md:grid-cols-7 md:grid-rows-2 gap-4">
         {item.images.slice(3, 6).map((src, idx) => {
           // classes per position on md+
@@ -96,8 +106,8 @@ export default async function ProductPage({ params }: Props) {
             idx === 0
               ? "aspect-video md:col-start-1 md:col-span-3 md:row-start-1" // first: row 1, span 2 cols
               : idx === 1
-              ? "aspect-video md:col-start-1 md:col-span-3 md:row-start-2" // second: row 2, span 2 cols
-              : "aspect-square md:aspect-auto md:col-start-4 md:col-span-4 row-span-2"; // third: span 4 cols & 2 rows
+                ? "aspect-video md:col-start-1 md:col-span-3 md:row-start-2" // second: row 2, span 2 cols
+                : "aspect-square md:aspect-auto md:col-start-4 md:col-span-4 row-span-2"; // third: span 4 cols & 2 rows
 
           return (
             <div

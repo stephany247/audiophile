@@ -68,7 +68,7 @@ export default function CartModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex justify-center items-start pt-24">
+    <div className="fixed inset-0 z-50 bg-black/50 flex justify-center md:justify-end md:pr-8 lg:pr-24 items-start pt-24">
       <div
         ref={panelRef}
         className="bg-white rounded-lg shadow-lg w-11/12 max-w-md p-6 space-y-6"

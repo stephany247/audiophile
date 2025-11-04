@@ -13,8 +13,8 @@ export const sendOrderConfirmation = internalAction({
     handler: async (ctx, args) => {
         const RESEND_API_KEY = process.env.RESEND_API_KEY;
         const FROM = process.env.RESEND_FROM_EMAIL;
-        const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL ?? "support@example.com";
-        const APP_URL = process.env.APP_URL ?? "https://your-app.com";
+        const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL?? "support@audiophilestore.com";
+        const APP_URL = process.env.APP_URL ?? "https://audiophile-88ksyr8ew-stephanie-oguochas-projects.vercel.app/";
 
         if (!RESEND_API_KEY || !FROM) {
             console.log("Resend config missing; skipping email send.");
@@ -29,7 +29,7 @@ export const sendOrderConfirmation = internalAction({
             totals: args.totals,
             appUrl: APP_URL,
             supportEmail: SUPPORT_EMAIL,
-            fromName: "Your Shop",
+            fromName: "Audiophile",
         });
 
         const res = await fetch("https://api.resend.com/emails", {

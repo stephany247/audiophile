@@ -19,7 +19,7 @@ export default function FeaturedGrid() {
             Upgrade to premium speakers that are phenomenally built to deliver
             truly remarkable sound.
           </p>
-          <Button variant="primary" className="bg-black w-fit">
+          <Button variant="primary" href="/speakers/zx9-speaker" className="bg-black hover:bg-black/80 w-fit">
             See Product
           </Button>
         </div>
@@ -27,7 +27,7 @@ export default function FeaturedGrid() {
 
       <article className="col-span-1 bg-surface rounded p-6 flex flex-col justify-center gap-y-8 h-80 w-full bg-[url(/images/zx7-speaker.png)] md:bg-[url(/images/zx7-speaker-desktop.png)] bg-cover bg-left md:bg-center lg:bg-position-[100%_95%] bg-no-repeat">
         <h3 className="font-bold uppercase text-left">ZX7 Speaker</h3>
-        <Button variant="secondary" className="w-fit">
+        <Button href="/speakers/zx7-speaker" variant="secondary" className="w-fit">
           See Product
         </Button>
       </article>
@@ -46,7 +46,7 @@ export default function FeaturedGrid() {
         {/* CONTENT */}
         <div className="bg-surface rounded-b w-full h-full flex flex-col justify-center space-y-4 p-6 rounded py-8 md:aspect- lg:aspect-video">
           <h3 className="font-bold uppercase text-left">YX1 Earphones</h3>
-          <Button variant="secondary" className="w-fit">
+          <Button href="/speakers/zx7-speaker" variant="secondary" className="w-fit">
             See Product
           </Button>
         </div>

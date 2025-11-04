@@ -1,6 +1,3 @@
-// convex/utils/emailTemplates.ts
-// Server-safe helpers to build order confirmation emails (HTML + plain text)
-
 type OrderItem = { id?: string; name: string; price: number; qty: number };
 type Customer = { name?: string; email?: string; phone?: string };
 type Shipping = { address1: string; city: string; postalCode: string; country: string };
@@ -53,7 +50,7 @@ export function buildOrderConfirmationEmail(opts: {
 <body>
   <div class="container">
     <div class="card">
-      <h2 style="margin:0 0 8px 0">Thanks for your order, ${safeName}!</h2>
+      <h2 style="margin:0 0 8px 0">Thanks for your order, ${safeName}! We've received your order and we'll send shipment updates.</h2>
       <p class="muted" style="margin:0 0 16px 0">Order <strong>#${escapeHtml(orderId)}</strong></p>
 
       <h3 style="margin-top:0">Order summary</h3>
@@ -124,7 +121,7 @@ You can view your order: ${orderUrl}
 Need help? Contact us at ${supportEmail}
 
 Thanks,
-${opts.fromName ?? "Your Team"}`;
+${opts.fromName ?? "Audiophile Team"}`;
 
     const subject = `Order confirmation — #${orderId}`;
 

@@ -15,7 +15,7 @@ export default function Hero({
   imgSrc = "/images/hero-image.png",
 }: HeroProps) {
   return (
-    <section className="relative bg-black text-white">
+    <section className="relative bg-black text-white md:py-12 lg:py-0">
       <div className="absolute inset-0 lg:relative lg:inset-auto lg:hidden">
         <Image
           src={imgSrc}
@@ -46,7 +46,7 @@ export default function Hero({
           </p>
 
           <div className="flex justify-center lg:justify-start">
-            <Button variant="primary">See Product</Button>
+            <Button variant="primary" href="/headphones/xx99-mark-ii">See Product</Button>
           </div>
         </div>
 

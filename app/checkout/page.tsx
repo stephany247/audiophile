@@ -3,9 +3,9 @@ import React from "react";
 
 function checkoutPage() {
   return (
-    <main className="page-container mx-auto p-6">
+    <>
       <CheckoutForm />
-    </main>
+    </>
   );
 }
 

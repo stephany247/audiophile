@@ -64,7 +64,7 @@ export default function Navbar() {
 
         {/* CART ICON */}
         <button
-          className="text-white"
+          className="text-white cursor-pointer"
           onClick={() => setCartOpen(true)} //opens cart modal
           aria-label="Open cart"
         >

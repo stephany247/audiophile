@@ -23,7 +23,7 @@ const TextField: React.FC<TextFieldProps> = ({
   const inputId = id ?? label.replace(/\s+/g, "-").toLowerCase();
 
   return (
-    <div className="flex flex-col gap-2 w-full max-w-sm text-[12px] font-bold tracking-[-0.21px] text-true-black">
+    <div className={`flex flex-col gap-2 w-full text-[12px] font-bold tracking-[-0.21px] text-true-black ${className}`}>
       <div className="flex justify-between items-center">
         <label htmlFor={inputId} className={hasError ? "text-red" : ""}>
           {label}
@@ -42,7 +42,6 @@ const TextField: React.FC<TextFieldProps> = ({
           hasError && "border-2 border-red",
           isActive && "border border-primary text-black",
           !hasError && !isActive && "border border-accent",
-          className
         )}
         {...props}
       />

@@ -10,6 +10,8 @@ import RadioSelect from "@/components/ui/RadioSelect";
 import Button from "@/components/ui/Button";
 import { formatCurrency } from "@/utils/formatCurrency";
 import CartItem from "../cartModal/CartItem";
+import ConfirmationModal from "./ConfirmationModal";
+import { useRouter } from "next/navigation";
 
 type FormState = {
   name: string;
@@ -54,6 +56,11 @@ export default function CheckoutForm() {
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const hiddenSubmitRef = useRef<HTMLButtonElement | null>(null);
+  const router = useRouter();
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
+  const [createdOrderId, setCreatedOrderId] = useState<string | undefined>(
+    undefined
+  );
 
   const handleChange = <K extends keyof FormState>(
     key: K,
@@ -120,9 +127,14 @@ export default function CheckoutForm() {
     };
 
     try {
-      await createOrder(order);
-      alert("Order created successfully!");
-      clear();
+      const result = await createOrder(order);
+      const id = result?._id
+        ? String(result._id)
+        : result
+          ? String(result)
+          : undefined;
+      setCreatedOrderId(id);
+      setConfirmationOpen(true);
       setForm({
         name: "",
         email: "",
@@ -160,12 +172,9 @@ export default function CheckoutForm() {
         Go back
       </Link>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="p-6 bg-white rounded-lg">
+      <div className="page-container px-0 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="p-6 bg-white rounded-lg lg:col-span-2">
           <h4 className="uppercase">Checkout</h4>
-          <p className="uppercase text-primary font-bold my-6">
-            Billing details
-          </p>
 
           {/* formRef used so we can trigger submit from summary area */}
           <form
@@ -173,43 +182,51 @@ export default function CheckoutForm() {
             onSubmit={handleSubmit}
             className="space-y-4 flex flex-col"
           >
-            <TextField
-              label="Name"
-              id="name"
-              value={form.name}
-              onChange={(e) => handleChange("name", e.target.value)}
-              error={errors.name}
-              placeholder="Alexei Ward"
-            />
-            <TextField
-              label="Email Address"
-              id="email"
-              value={form.email}
-              onChange={(e) => handleChange("email", e.target.value)}
-              error={errors.email}
-              placeholder="alexei@mail.com"
-              type="email"
-            />
-            <TextField
-              label="Phone number"
-              id="phone"
-              value={form.phone}
-              onChange={(e) => handleChange("phone", e.target.value)}
-              error={errors.phone}
-              placeholder="+1 202-555-0136"
-              type="tel"
-            />
-
-            <p className="uppercase text-primary font-bold my-6">Shipping</p>
-            <TextField
-              label="Your Address"
-              id="address1"
-              value={form.address1}
-              onChange={(e) => handleChange("address1", e.target.value)}
-              error={errors.address1}
-              placeholder="1137 Williams Avenue"
-            />
-            <div className="flex gap-4">
+            <fieldset className="grid md:grid-cols-2 gap-4 mt-6">
+              <legend className="uppercase text-primary font-bold my-6 block">
+                Billing details
+              </legend>
+              <TextField
+                label="Name"
+                id="name"
+                value={form.name}
+                onChange={(e) => handleChange("name", e.target.value)}
+                error={errors.name}
+                placeholder="Alexei Ward"
+              />
+              <TextField
+                label="Email Address"
+                id="email"
+                value={form.email}
+                onChange={(e) => handleChange("email", e.target.value)}
+                error={errors.email}
+                placeholder="alexei@mail.com"
+                type="email"
+              />
+              <TextField
+                label="Phone number"
+                id="phone"
+                value={form.phone}
+                onChange={(e) => handleChange("phone", e.target.value)}
+                error={errors.phone}
+                placeholder="+1 202-555-0136"
+                type="tel"
+              />
+            </fieldset>
+            <fieldset className="grid md:grid-cols-2 gap-4 mt-6">
+              <legend className="uppercase text-primary! font-bold my-4">
+                Shipping Info
+              </legend>
+              <TextField
+                label="Your Address"
+                id="address1"
+                value={form.address1}
+                onChange={(e) => handleChange("address1", e.target.value)}
+                error={errors.address1}
+                placeholder="1137 Williams Avenue"
+                className="md:col-span-2"
+              />
+              {/* <div className="flex flex-col gap-4"> */}
               <TextField
                 label="ZIP Code"
                 id="postalCode"
@@ -226,57 +243,64 @@ export default function CheckoutForm() {
                 error={errors.city}
                 placeholder="New York"
               />
-            </div>
-            <TextField
-              label="Country"
-              id="country"
-              value={form.country}
-              onChange={(e) => handleChange("country", e.target.value)}
-              error={errors.country}
-              placeholder="United States"
-            />
-
-            <p className="uppercase text-primary text-sm font-bold my-6">
-              Payment Method
-            </p>
-            <div className="flex flex-col gap-3">
-              <RadioSelect
-                label="e-Money"
-                name="paymentMethod"
-                value="EMONEY"
-                checked={form.paymentMethod === "EMONEY"}
-                onChange={(v) => handleChange("paymentMethod", v as any)}
+              {/* </div> */}
+              <TextField
+                label="Country"
+                id="country"
+                value={form.country}
+                onChange={(e) => handleChange("country", e.target.value)}
+                error={errors.country}
+                placeholder="United States"
               />
-              <RadioSelect
-                label="Cash on Delivery"
-                name="paymentMethod"
-                value="CASH_ON_DELIVERY"
-                checked={form.paymentMethod === "CASH_ON_DELIVERY"}
-                onChange={(v) => handleChange("paymentMethod", v as any)}
-              />
-            </div>
+            </fieldset>
+            <fieldset className="grid md:grid-cols-2 gap-4 mt-6">
+              <p className="uppercase text-primary! text-sm font-bold my-4">
+                Payment Details
+              </p>
+              <p className="text-sm! text-black! font-bold md:col-start-1">
+                Payment Method
+              </p>
+              <div className="flex flex-col gap-3 md:col-start-2">
+                <RadioSelect
+                  label="e-Money"
+                  name="paymentMethod"
+                  value="EMONEY"
+                  checked={form.paymentMethod === "EMONEY"}
+                  onChange={(v) => handleChange("paymentMethod", v as any)}
+                />
+                <RadioSelect
+                  label="Cash on Delivery"
+                  name="paymentMethod"
+                  value="CASH_ON_DELIVERY"
+                  checked={form.paymentMethod === "CASH_ON_DELIVERY"}
+                  onChange={(v) => handleChange("paymentMethod", v as any)}
+                />
+              </div>
 
-            {form.paymentMethod === "EMONEY" && (
-              <>
-                <TextField
-                  label="e-Money Number"
-                  id="eMoneyNumber"
-                  value={form.eMoneyNumber}
-                  onChange={(e) => handleChange("eMoneyNumber", e.target.value)}
-                  error={errors.eMoneyNumber}
-                  placeholder="238521993"
-                />
-                <TextField
-                  label="e-Money Pin"
-                  id="eMoneyPin"
-                  value={form.eMoneyPin}
-                  onChange={(e) => handleChange("eMoneyPin", e.target.value)}
-                  error={errors.eMoneyPin}
-                  placeholder="PIN"
-                  type="password"
-                />
-              </>
-            )}
+              {form.paymentMethod === "EMONEY" && (
+                <>
+                  <TextField
+                    label="e-Money Number"
+                    id="eMoneyNumber"
+                    value={form.eMoneyNumber}
+                    onChange={(e) =>
+                      handleChange("eMoneyNumber", e.target.value)
+                    }
+                    error={errors.eMoneyNumber}
+                    placeholder="238521993"
+                  />
+                  <TextField
+                    label="e-Money Pin"
+                    id="eMoneyPin"
+                    value={form.eMoneyPin}
+                    onChange={(e) => handleChange("eMoneyPin", e.target.value)}
+                    error={errors.eMoneyPin}
+                    placeholder="PIN"
+                    type="password"
+                  />
+                </>
+              )}
+            </fieldset>
 
             {/* hidden native submit so external button can trigger it reliably */}
             <button
@@ -284,12 +308,14 @@ export default function CheckoutForm() {
               ref={hiddenSubmitRef}
               className="hidden"
               aria-hidden
-            >Continue & Pay</button>
+            >
+              Continue & Pay
+            </button>
           </form>
         </div>
 
         {/* ORDER SUMMARY */}
-        <div className="bg-white rounded-lg p-6 mt-0 space-y-6">
+        <div className="bg-white rounded-lg p-6 mt-0 space-y-6 h-fit">
           <h6 className="uppercase mb-4">Summary</h6>
 
           <div className="space-y-2">
@@ -335,6 +361,18 @@ export default function CheckoutForm() {
           </div>
         </div>
       </div>
+      <ConfirmationModal
+        open={confirmationOpen}
+        onClose={() => {
+          setConfirmationOpen(false);
+          router.push("/");
+          clear();
+        }}
+        orderId={createdOrderId}
+        customerName={form.name || undefined}
+        items={items}
+        grandTotal={totals.grandTotal}
+      />
     </section>
   );
 }
