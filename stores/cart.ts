@@ -26,7 +26,7 @@ export const useCart = create<CartState>()(
         if (exists) {
           set({
             items: get().items.map((i) =>
-              i.id === item.id ? { ...i, qty: i.qty + item.qty } : i
+              i.id === item.id ? { ...i, qty: item.qty } : i
             ),
           });
         } else {
@@ -36,7 +36,7 @@ export const useCart = create<CartState>()(
       updateQty: (id, qty) =>
         set({
           items: get().items.map((i) =>
-            i.id === id ? { ...i, qty } : i
+            i.id === id ? { ...i, qty: Math.max(1, qty) } : i
           ),
         }),
       remove: (id) =>

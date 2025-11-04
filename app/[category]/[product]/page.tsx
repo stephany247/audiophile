@@ -86,7 +86,7 @@ export default async function ProductPage({ params }: Props) {
         </section>
 
         {/* IN THE BOX */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 lg:gap-0 w-full">
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6 w-full">
           <h6 className="uppercase text-h5! md:text-h3!">In the box</h6>{" "}
           <ul className="space-y-3">
             {item.in_the_box.map((i, idx) => (
