@@ -10,7 +10,7 @@ export default function AboutSection() {
         height={420}
         className="relative z-10 w-full h-75 md:h-auto lg:max-h-140 aspect-square md:aspect-video lg:aspect-square rounded object-cover object-center md:object-[100%_60%]"
       />
-      <div className="space-y-4 lg:space-y-8 md:w-8/10 lg:w-full mx-auto">
+      <div className="space-y-4 md:space-y-8 md:w-8/10 lg:w-full mx-auto">
         <h3 className="text-h3! md:text-h1! font-bold uppercase">
           Bringing you the{" "}
           <mark className="bg-transparent text-primary">best</mark> audio gear

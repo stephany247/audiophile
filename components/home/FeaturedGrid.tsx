@@ -14,7 +14,7 @@ export default function FeaturedGrid() {
           className="relative z-10 object-contain w-40 h-50 lg:w-70 md:h-80 lg:self-end"
         />
         <div className="space-y-6 lg:text-left">
-          <h2 className="text-balance uppercase">ZX9 <br className="hidden lg:block"/> Speaker</h2>
+          <h2 className="text-balance uppercase text-4xl!">ZX9 <br/> Speaker</h2>
           <p className="max-w-sm font-medium text-white/75!">
             Upgrade to premium speakers that are phenomenally built to deliver
             truly remarkable sound.
@@ -25,7 +25,7 @@ export default function FeaturedGrid() {
         </div>
       </article>
 
-      <article className="col-span-1 bg-surface rounded p-6 flex flex-col justify-center gap-y-8 h-80 w-full bg-[url(/images/zx7-speaker.png)] md:bg-[url(/images/zx7-speaker-desktop.png)] bg-cover bg-left md:bg-center lg:bg-position-[100%_95%] bg-no-repeat">
+      <article className="col-span-1 bg-surface rounded p-6 md:p-12 flex flex-col justify-center gap-y-8 h-80 w-full bg-[url(/images/zx7-speaker.png)] md:bg-[url(/images/zx7-speaker-desktop.png)] bg-cover bg-left md:bg-center lg:bg-position-[100%_95%] bg-no-repeat">
         <h3 className="font-bold uppercase text-left">ZX7 Speaker</h3>
         <Button href="/speakers/zx7-speaker" variant="secondary" className="w-fit">
           See Product
@@ -44,7 +44,7 @@ export default function FeaturedGrid() {
         </div>
 
         {/* CONTENT */}
-        <div className="bg-surface rounded-b w-full h-full flex flex-col justify-center space-y-4 p-6 rounded py-8 md:aspect- lg:aspect-video">
+        <div className="bg-surface rounded-b w-full h-full flex flex-col justify-center space-y-6 md:space-y-12 p-6 md:p-12 rounded py-8 md:aspect- lg:aspect-video">
           <h3 className="font-bold uppercase text-left">YX1 Earphones</h3>
           <Button href="/speakers/zx7-speaker" variant="secondary" className="w-fit">
             See Product
