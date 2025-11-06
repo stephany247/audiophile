@@ -5,8 +5,8 @@ import { FaInstagram, FaTwitter } from "react-icons/fa6";
 
 export default function Footer() {
   return (
-    <footer className="relative bg-true-black text-white py-12">
-      <div className="page-container px-6 flex flex-col justify-center items-center md:items-start text-center md:text-left gap-12 before:content-[''] before:absolute before:top-0 md:before:left-8 before:w-25 before:h-1 before:bg-primary">
+    <footer className="relative bg-true-black text-white pb-12">
+      <div className="page-container px-6 flex flex-col justify-center items-center md:items-start text-center md:text-left gap-12 before:content-[''] before:relative before:top-0 before:w-25 before:h-1 before:bg-primary">
         <div className="flex flex-col lg:flex-row lg:justify-between items-center md:items-start gap-12 w-full">
           {/*Logo */}
           <Link href="/">

@@ -111,7 +111,7 @@ export default function ConfirmationModal({
             <div className="bg-surface rounded-t-lg md:rounded-l-lg md:rounded-r-none p-6 pb-2 md:col-span-3">
               {/* Compact first-item row using CartItem (read-only) */}
               {first && !expanded && (
-                <div className="flex items-center justify-between border-b border-gray pb-4">
+                <div className="flex items-center justify-between">
                   <div className="flex-1">
                     {/* Pass a safe id in case first.id is undefined */}
                     <CartItem
@@ -131,7 +131,7 @@ export default function ConfirmationModal({
               )}
 
               {others > 0 && !expanded && (
-                <div className="mt-5 flex items-center justify-center">
+                <div className="flex items-center justify-center border-t border-gray py-2">
                   <button
                     type="button"
                     onClick={() => setExpanded((s) => !s)}
@@ -153,7 +153,7 @@ export default function ConfirmationModal({
               >
                 {expanded && (
                   <div className="space-y-2 overflow-y-auto">
-                    {items.slice(1).map((it, idx) => {
+                    {items.map((it, idx) => {
                       const safeItem = {
                         id:
                           it.id ??
@@ -173,6 +173,19 @@ export default function ConfirmationModal({
                   </div>
                 )}
               </div>
+              {others > 0 && expanded && (
+                <div className="border-t py-2 border-gray flex items-center justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setExpanded((s) => !s)}
+                    className="text-sm text-true-black/50 hover:underline font-bold"
+                    aria-expanded={expanded ? "true" : "false"}
+                    aria-controls="confirmation-expanded-items"
+                  >
+                    View Less
+                  </button>
+                </div>
+              )}
             </div>
 
             <div

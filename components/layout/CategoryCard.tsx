@@ -12,14 +12,14 @@ export default function CategoryCard({ title, href, imgSrc }: CategoryCardProps)
   return (
     <article className="relative flex flex-col items-center bg-surface text-true-black rounded-lg p-6 text-center hover:shadow-md transition-all">
       {/* Image + shadow wrapper */}
-      <div className="relative flex items-center justify-center sapce-y-4 w-full">
+      <div className="relative flex items-center justify-center md:space-y-4 w-full">
         {/* Image */}
         <Image
           src={imgSrc}
           alt={title}
           width={120}
           height={120}
-          className="relative z-10 -mt-20 object-contain w-20 h-30"
+          className="relative z-10 -mt-20 object-contain w-20 h-30 md:w-32 md:h-40"
         />
 
         {/* Elliptical shadow below image */}
