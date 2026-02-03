@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { ConvexClientProvider } from "./ConvexClientProvider";
+import { Toaster } from "react-hot-toast";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${manrope.className} antialiased`}>
         <ConvexClientProvider>
+          <Toaster position="top-right" />
           <Navbar />
           <main>{children}</main>
           <Footer />
