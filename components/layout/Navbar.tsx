@@ -6,10 +6,15 @@ import { IoCartOutline } from "react-icons/io5";
 import { MdMenu } from "react-icons/md";
 import MobileMenu from "./MobileMenu";
 import CartModal from "../cartModal/CartModal";
+import { useCart } from "@/stores/cart";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+
+  const cartCount = useCart((state) =>
+    state.items.reduce((sum, item) => sum + item.qty, 0),
+  );
 
   return (
     <header className="w-full bg-true-black text-white">
@@ -64,11 +69,17 @@ export default function Navbar() {
 
         {/* CART ICON */}
         <button
-          className="text-white cursor-pointer"
-          onClick={() => setCartOpen(true)} //opens cart modal
+          className="relative text-white cursor-pointer"
+          onClick={() => setCartOpen(true)}
           aria-label="Open cart"
         >
           <IoCartOutline size={26} />
+
+          {cartCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+              {cartCount}
+            </span>
+          )}
         </button>
       </div>
 
@@ -77,7 +88,9 @@ export default function Navbar() {
       <MobileMenu open={open} onClose={() => setOpen(false)} />
 
       {/* cart modal */}
-      {cartOpen && <CartModal open={cartOpen} onClose={() => setCartOpen(false)} />}
+      {cartOpen && (
+        <CartModal open={cartOpen} onClose={() => setCartOpen(false)} />
+      )}
     </header>
   );
 }

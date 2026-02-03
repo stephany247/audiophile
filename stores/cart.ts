@@ -40,6 +40,11 @@ export const useCart = create<CartState>()(
       },
 
       updateQty: (id, qty) => {
+        if (qty <= 0) {
+          set({ items: get().items.filter((i) => i.id !== id) });
+          toast.success("Item removed from cart");
+          return;
+        }
         set({
           items: get().items.map((i) =>
             i.id === id ? { ...i, qty: Math.max(1, qty) } : i
@@ -50,12 +55,12 @@ export const useCart = create<CartState>()(
 
       remove: (id) => {
         set({ items: get().items.filter((i) => i.id !== id) });
-        toast("Item removed", { icon: "🗑️" });
+        toast.success("Item removed from cart");
       },
 
       clear: () => {
         set({ items: [] });
-        toast("Cart cleared");
+        toast.success("Cart cleared");
       },
     }),
     { name: "audiophile-cart" }

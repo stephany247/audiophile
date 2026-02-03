@@ -59,7 +59,7 @@ export default function CartItem({
             <NumberInput
               value={item.qty}
               onChange={(v) => updateQty(item.id, v)}
-              min={1}
+              min={0}
               max={99}
             />
           ) : (
